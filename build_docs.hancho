@@ -15,18 +15,18 @@ ext   = hancho.Path.ext
 #     Turning tracing on will generate _ton_ of spam in the C parser demo.
 #     Turning EXTRA_DEBUG on will generate even more spam.
 
-config.build_tag = "release"
+hancho.config.build_tag = "release"
 
 opts      = ["-std=c++20", "-MMD"]
 warnings  = ["all", "error", "no-unused-variable", "no-unused-local-typedefs", "no-unused-but-set-variable"],
 includes  = ["{repo_dir}", "."]
 defines   = []
 
-if config.build_tag == "release":
+if hancho.config.build_tag == "release":
     opts += ["-O3", "-flto"]
-elif config.build_tag == "size":
+elif hancho.config.build_tag == "size":
     opts += ["-Os", "-fdata-sections", "-ffunction-sections", "-Wl,--gc-sections", "-Wl,-s"]
-elif config.build_tag == "debug":
+elif hancho.config.build_tag == "debug":
     opts += ["-g", "-O0"]
     #defines += ["MATCHERONI_ENABLE_TRACE", "EXTRA_DEBUG"]
 else:
@@ -35,14 +35,14 @@ else:
 # --------------------------------------------------------------------------------------------------
 
 ems_compile_cpp = hancho.Tool(
-    command  = "emcc {opts} {weave('-W', warnings)} {weave('-I', inlcudes)} {weave('-D', defines)} -c {in_src} -o {out_obj}",
+    command  = "emcc {opts} {weave('-W', warnings)} {weave('-I', includes)} {weave('-D', defines)} -c {in_src} -o {out_obj}",
     opts     = opts,
     warnings = warnings,
     includes = includes,
     defines  = defines,
     in_src   = None,
     out_obj  = "{ext(in_src, '.o')}",
-    depfile  = "{ext(out_obj, '.d')}",
+    in_depfile = "{ext(out_obj, '.d')}",
 )
 
 ems_js_binary = hancho.Tool(
@@ -108,5 +108,5 @@ for src in tutorial_src:
         in_objs = obj,
         in_data = ext(src, '.input'),
         embed   = "tutorial",
-        out_bin = ext(src, '.js')
+        out_js = ext(src, '.js')
     )

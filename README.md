@@ -12,11 +12,17 @@ Documentation for Matcheroni can be found [here](https://aappleby.github.io/Matc
 
 # Building the Matcheroni examples and tests
 
-Install [Ninja](https://ninja-build.org/) if you haven't already, then run ninja in the repo root. The test suite will run as part of the build process.
+Install [Hancho](https://github.com/aappleby/hancho). From the repo root, with Hancho checked out beside this repository as `../hancho`, run:
 
-To rebuild the emscriptened tutorial, run "build -f build_docs.ninja" in the repo root.
+```bash
+git clone https://github.com/aappleby/hancho.git ../hancho
+git -C ../hancho checkout e8271b6f9a0f48efc7a910cb1fdb5f4fb2b6878b
+python3 ../hancho/hancho.py
+```
 
-See build.ninja for configuration options.
+On Windows, use `python` if `python3` is not available. Hancho runs the example builds and tests described by `build.hancho`; configuration options are in that file.
+
+To rebuild the Emscripten tutorial, run `python3 ../hancho/hancho.py --script-file build_docs.hancho` from the repo root with Emscripten installed.
 
 # Performance
 
